@@ -1,56 +1,54 @@
-// JavaScript function that wraps everything
 
-	var characters = [{	name: "Darth Vader", thumbnail: "assets/images/darth-vader.jpg", strength: 150},
-					  { name: "Luke Skywalker", thumbnail: "assets/images/Luke_Skywalker.png", strength: 120},
-					  { name: "Obi-Wan-Kanobi", thumbnail: "assets/images/obi-wan-kanobi.jpeg", strength: 160},
-					  { name: "Orson Krennic", thumbnail: "assets/images/orson-krennic.jpg", strength: 170}					
-					];
-	var chose = false;				
+var crystals = [{name: "Crystal-1", src: "assets/images/crystal1.jpg", power: 0},
+{name: "Crystal-2", src: "assets/images/crystal2.jpg", power: 0},
+{name: "Crystal-3", src: "assets/images/crystal3.jpg", power: 0},
+{name: "Crystal-4", src: "assets/images/crystal4.jpg", power: 0}]
+ 
+function generateNumber(min, max) {
+	return Math.floor(Math.random() * max) + min;
+}
+var target = 0;
+var wins = 0;
+var losses = 0;
+var totalScore = 0;
+
 $(document).ready(function() {
-	 characters.forEach(function(obj){
-	 	 var newDiv = $("<div>");
-	 	 newDiv.addClass("image-container");
-	 	 
-	 	 var newElem = $("<h4>");
-	 	 newElem.text(obj.name);
-	 	 newDiv.append(newElem);
-	 	 
-	 	 var newImg = $("<img>");
-		 newImg.attr("src", obj.thumbnail);
-		 newImg.css({"height": "100px", "width" : "140px"});
-		 newDiv.append(newImg);
-		 newDiv.attr("id", obj.name);
-		 
-		 var newH5 = $("<h5>");
-		 newH5.text(obj.strength);
-		 newDiv.append(newH5);
+	crystals.forEach(function(obj) {
+	 	obj.power = generateNumber(1, 12);
+	 	var newDiv = $("<div>");
+	 	newDiv.addClass("col-sm-3");
+	 	var newImg = $("<img>");
+		newImg.attr("src", obj.src);
+		newDiv.append(newImg);
+		newImg.addClass("img img-responsive");
+		newImg.attr("data-attribute", obj.power);
+		$("#image-container").append(newDiv);
+	});
+	target = generateNumber(18,120);
+	$("#targetNum").text(target);
+	
+	$("#wins").text(wins);
+	$("#losses").text(losses);
+	$("#totalScore").text(totalScore);
 
-		 $("#characters").append(newDiv);$(this).addClass("enemy-container");
-	 });
-
-	 
-	$(".image-container").on("click", function(){
-	 	var currentObj = $(this).attr("id");
-	 	$("#characters").hide();
-	 	 if(!chose) {
-	 		$(".myCharacter").append($(this));
-	 		chose = true;
-	 		
-		 	$(".image-container").each(function(i){
-		 		if(currentObj !== $(this).attr("id")) {
-		 			$(".enemy").append($(this));
-		 			$(this).css({"background-color":"red", "border-color":"black"});
-		 		}
-		 	});	
-	 	} else {
-	 		$(".defenderCharacter").append($(this));
-	 		$(this).addClass("defender");
-	 	}	
+	$("img").on("click", function(){
+		totalScore += parseInt($(this).attr("data-attribute"));
+		$("#totalScore").text(totalScore);
+		if(totalScore === target) {
+			wins++;
+			$("#wins").text(wins);
+			resetGame();
+		} else if(totalScore > target) {
+			losses++;
+			$("#losses").text(losses);
+			resetGame();
+		}
 	});
 
-	$(".actionButton").on("click", function() {
-		console.log($(".defender").attr("id"));
-	});
-
-
-});	
+	function resetGame() {
+		target = generateNumber(18,120);
+		$("#targetNum").text(target);
+		totalScore = 0;
+		$("#totalScore").text(totalScore);
+	}
+});
