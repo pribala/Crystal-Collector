@@ -17,21 +17,26 @@ $(document).ready(function() {
 	 	obj.power = generateNumber(1, 12);
 	 	var newDiv = $("<div>");
 	 	newDiv.addClass("col-sm-3");
-	 	var newImg = $("<img>");
-		newImg.attr("src", obj.src);
-		newDiv.append(newImg);
-		newImg.addClass("img img-responsive");
-		newImg.attr("data-attribute", obj.power);
+	 	//var newImg = $("<img>");
+		// newImg.attr("src", obj.src);
+		// newDiv.append(newImg);
+		// newImg.addClass("img img-responsive");
+		// newImg.attr("data-attribute", obj.power);
+		var newBtn = $("<button>");
+		newBtn.css({"width": "250px", "height": "202px"});
+		newBtn.css({"background-image": "url("+obj.src+")"});
+		newBtn.attr("data-attribute", obj.power);
+		newDiv.append(newBtn);
 		$("#image-container").append(newDiv);
 	});
-	target = generateNumber(18,120);
+	target = generateNumber(19,120);
 	$("#targetNum").text(target);
 	
 	$("#wins").text(wins);
 	$("#losses").text(losses);
 	$("#totalScore").text(totalScore);
 
-	$("img").on("click", function(){
+	$("button").on("click", function(){
 		totalScore += parseInt($(this).attr("data-attribute"));
 		$("#totalScore").text(totalScore);
 		if(totalScore === target) {
@@ -46,7 +51,7 @@ $(document).ready(function() {
 	});
 
 	function resetGame() {
-		target = generateNumber(18,120);
+		target = generateNumber(19,120);
 		$("#targetNum").text(target);
 		totalScore = 0;
 		$("#totalScore").text(totalScore);
