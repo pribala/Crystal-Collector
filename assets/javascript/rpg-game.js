@@ -5,7 +5,16 @@
 					  { name: "Obi-Wan-Kanobi", thumbnail: "assets/images/obi-wan-kanobi.jpeg", strength: 160, attackPower: 8},
 					  { name: "Orson Krennic", thumbnail: "assets/images/orson-krennic.jpg", strength: 170, attackPower: 25}					
 					];
-	var chose = false;				
+	var choseAttacker = false;	
+	var choseDefender = false;
+	var attackerPower;
+	var attackerStrength;
+	var defenderStrength;
+	var defenderPower;
+	var counter = 0;
+	var enhancedPower;
+	var newOpponent = false;
+	
 $(document).ready(function() {
 	 var mainCharacter;
 	 var opponentCharacter;
@@ -20,24 +29,27 @@ $(document).ready(function() {
 	 	 var newImg = $("<img>");
 		 newImg.attr("src", obj.thumbnail);
 		 newImg.css({"height": "100px", "width" : "140px"});
+		 newDiv.data("strength", obj.strength);
+		 newDiv.data("power", obj.attackPower);
 		 newDiv.append(newImg);
 		 newDiv.attr("id", obj.name);
 		 
 		 var newH5 = $("<h5>");
 		 newH5.text(obj.strength);
+		 newH5.attr("data-attribute", obj.name);
 		 newDiv.append(newH5);
-		 newH5.attr("id", obj.name+"power");
-
 		 $("#characters").append(newDiv);$(this).addClass("enemy-container");
 	 });
 
 	 
 	$(".image-container").on("click", function(){
 	 	$("#characters").hide();
-	 	 if(!chose) {
+	 	 if(!choseAttacker) {
 	 		$(".myCharacter").append($(this));
 	 		mainCharacter = $(this).attr("id");
-	 		chose = true;
+	 		attackerPower = parseInt($(this).data("power"));
+	 		attackerStrength = parseInt($(this).data("strength"));
+	 		choseAttacker = true;
 	 		
 		 	$(".image-container").each(function(i){
 		 		if(mainCharacter !== $(this).attr("id")) {
@@ -47,24 +59,51 @@ $(document).ready(function() {
 		 	});	
 	 	} else {
 	 		opponentCharacter = $(this).attr("id");
+	 		choseDefender = true;
 	 		$(".defenderCharacter").append($(this));
+	 		defenderPower = parseInt($(this).data("power"));
+	 		defenderStrength = parseInt($(this).data("strength"));
 	 		$(this).addClass("defender");
+
 	 	}	
 	});
 
 	$(".actionButton").on("click", function() {
-		console.log(mainCharacter);
-		console.log(opponentCharacter);
-		console.log(characters.name[mainCharacter]);
-		//characters.name[mainCharacter].strength -= characters.opponentCharacter.attackPower;
-		// var h5Id = mainCharacter+"power";
-		// console.log(h5Id);
-		// $('"#'+h5Id+'"').text("h5");
-		
-	});
+
+		if(!choseAttacker ||  !choseDefender) {
+			$(".message").html("You have no opponents!");
+		}else {
+			if(attackerStrength > 0) {
+
+				counter++;
+				enhancedPower = attackerPower * counter
+				attackerStrength -= defenderPower;
+				$(".myCharacter h5").text(attackerStrength);
+				defenderStrength -= enhancedPower;
+				$(".defenderCharacter h5").text(defenderStrength);
+				$(".message").html("You attacked "+ opponentCharacter + " for "+ enhancedPower+" damage</br>"+opponentCharacter+ " attacked you back for "+ defenderPower+ " damage!");
+				if(defenderStrength <= 0) {
+					$(".message").html("You have defeated "+ opponentCharacter+" Chose another opponent!");
+						$(".defenderCharacter").empty();
+					if ( $('.enemy').children().length == 0 ) {
+				    	$(".message").html("You have won!");
+				    }	
+				}
+			}else {
+				$(".message").html("You have been defeated!")
+				choseAttacker = false;
+			}
+		}
+	});	
+
+	$("#restartButton").on('click', function() {
+     console.log("inside");
+     location.reload();
+ 	});
+});
+	
 
 
-});	
 
 // Game logic : strength <= 0 lose game, restart button, 
 // attack points = each opponent has a set attack points

@@ -71,5 +71,13 @@ h2 {
 	margin-top: 10px;
 }
 
+.message {
+	clear: both;
+	font-size: 16px;
+	font-color: red;
+	font-weight: bold;
+	margin: 10px;
+	padding: 5px;
+}
 
 
