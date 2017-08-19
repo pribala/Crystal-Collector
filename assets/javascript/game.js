@@ -16,17 +16,7 @@ var losses = 0;
 var totalScore = 0;
 
 $(document).ready(function() {
-	// crystals.forEach(function(obj) {
-	//  	obj.power = generateNumber(1, 12);
-	//  	var newDiv = $("<div>");
-	//  	newDiv.addClass("col-md-3 col-sm-6 col-xs-12");
-	//  	var newBtn = $("<button>");
-	// 	newBtn.css({"width": "250px", "height": "202px"});
-	// 	newBtn.css({"background-image": "url("+obj.src+")"});
-	// 	newBtn.attr("data-attribute", obj.power);
-	// 	newDiv.append(newBtn);
-	// 	$("#image-container").append(newDiv);
-		powerUp();
+	powerUp();
 	
 	target = generateNumber(19,120);
 	$("#targetNum").text(target);
