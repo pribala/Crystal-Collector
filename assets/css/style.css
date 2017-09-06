@@ -1,3 +1,10 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background-image: url("../images/wormz.png");
+}
+
 .scoreStyle {
 	background-color: #18f2dc;
 	font-size: 25px;
@@ -9,5 +16,19 @@
 }
 
 .container {
-	background-image: url("../images/wormz.png");
+	/*background-image: url("../images/wormz.png");*/
+	min-height: 90%;
+	margin-bottom: 20px;
+}
+
+.footer {
+	min-height: 10%;
+	overflow: auto;
+	background-color: #18F2DC;
+}
+
+.footerContainer {
+	font-size: 10px;
+	padding: 10px;
+	margin-top: 30px;
 }
